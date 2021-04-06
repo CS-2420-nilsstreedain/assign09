@@ -5,21 +5,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class HashTable<K, V> implements Map<K, V> {
-	
+
 	private ArrayList<LinkedList<MapEntry<K, V>>> table;
+
 	private int itemCount;
-	
+
 	public HashTable() {
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
-		for(int i = 0; i < 100; i++)
-		   table.add(new LinkedList<MapEntry<K, V>>());
-		
+		for (int i = 0; i < 100; i++)
+			table.add(new LinkedList<MapEntry<K, V>>());
+
 		itemCount = 0;
 	}
 
-
 	/**
-	 * Removes all mappings from this map.
+	 * Removes all mappings from this HashTable.
 	 * 
 	 * O(table length)
 	 */
@@ -27,56 +27,173 @@ public class HashTable<K, V> implements Map<K, V> {
 	public void clear() {
 		itemCount = 0;
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
-		for(int i = 0; i < 100; i++)
-		   table.add(new LinkedList<MapEntry<K, V>>());
+		for (int i = 0; i < 100; i++)
+			table.add(new LinkedList<MapEntry<K, V>>());
 	}
 
+	/**
+	 * Determines whether this HashTable contains the specified value.
+	 * 
+	 * O(average list length)
+	 * 
+	 * @param value
+	 * @return true if this HashTable contains one or more keys to the specified
+	 *         value, false otherwise
+	 */
 	@Override
 	public boolean containsKey(K key) {
-		// TODO Auto-generated method stub
+		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
+
+		for (MapEntry<K, V> currEntry : chain)
+			if (currEntry.getKey().equals(key))
+				return true;
+
 		return false;
 	}
 
+	/**
+	 * Returns a List view of the mappings contained in this HashTable, where the
+	 * ordering of mapping in the list is insignificant.
+	 * 
+	 * O(average list length)
+	 * 
+	 * @return a List object containing all mapping (i.e., entries) in this
+	 *         HashTable
+	 */
 	@Override
 	public boolean containsValue(V value) {
-		// TODO Auto-generated method stub
+		LinkedList<MapEntry<K, V>> chain = table.get(value.hashCode() % table.size());
+
+		for (MapEntry<K, V> currEntry : chain)
+			if (currEntry.getValue().equals(value))
+				return true;
+
 		return false;
 	}
 
+	/**
+	 * Returns a List view of the mappings contained in this HashTable, where the
+	 * ordering of mapping in the list is insignificant.
+	 * 
+	 * O(table length)
+	 * 
+	 * @return a List object containing all mapping (i.e., entries) in this
+	 *         HashTable
+	 */
 	@Override
 	public List<MapEntry<K, V>> entries() {
-		// TODO Auto-generated method stub
-		return null;
+		List<MapEntry<K, V>> newList = new ArrayList<MapEntry<K, V>>();
+
+		for (LinkedList<MapEntry<K, V>> chain : table)
+			for (MapEntry<K, V> currEntry : chain)
+				newList.add(currEntry);
+
+		return newList;
 	}
 
+	/**
+	 * Gets the value to which the specified key is mapped.
+	 * 
+	 * O(1)
+	 * 
+	 * @param key
+	 * @return the value to which the specified key is mapped, or null if this
+	 *         HashTable contains no mapping for the key
+	 */
 	@Override
 	public V get(K key) {
-		// TODO Auto-generated method stub
+		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
+
+		for (MapEntry<K, V> currEntry : chain)
+			if (currEntry.getKey().equals(key))
+				return currEntry.getValue();
+
 		return null;
 	}
 
+	/**
+	 * Determines whether this HashTable contains any mappings.
+	 * 
+	 * O(1)
+	 * 
+	 * @return true if this HashTable contains no mappings, false otherwise
+	 */
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return itemCount != 0;
 	}
 
+	/**
+	 * Associates the specified value with the specified key in this HashTable.
+	 * (I.e., if the key already exists in this HashTable, resets the value;
+	 * otherwise adds the specified key-value pair.)
+	 * 
+	 * O(1)
+	 * 
+	 * @param key
+	 * @param value
+	 * @return the previous value associated with key, or null if there was no
+	 *         mapping for key
+	 */
 	@Override
 	public V put(K key, V value) {
-		// TODO Auto-generated method stub
-		return null;
+		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
+		
+		V prevValue = null;
+		
+		for (MapEntry<K, V> currEntry : chain) {
+			if (currEntry.getKey().equals(key)) {
+				prevValue = currEntry.getValue();
+				break;
+			}
+		}
+		
+		if (prevValue == null)
+			itemCount++;
+		
+		chain.add(new MapEntry<K, V>(key, value));
+		
+		return prevValue;
 	}
 
+	/**
+	 * Removes the mapping for a key from this HashTable if it is present.
+	 * 
+	 * O(1)
+	 *
+	 * @param key
+	 * @return the previous value associated with key, or null if there was no
+	 *         mapping for key
+	 */
 	@Override
 	public V remove(K key) {
-		// TODO Auto-generated method stub
-		return null;
+		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
+
+		V prevValue = null;
+		
+		for (MapEntry<K, V> currEntry : chain) {
+			if (currEntry.getKey().equals(key)) {
+				prevValue = currEntry.getValue();
+
+				itemCount--;
+				chain.remove(currEntry);
+				
+				break;
+			}
+		}
+		
+		return prevValue;
 	}
 
+	/**
+	 * Determines the number of mappings in this HashTable.
+	 * 
+	 * O(1)
+	 * 
+	 * @return the number of mappings in this HashTable
+	 */
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return itemCount;
 	}
-
 }
