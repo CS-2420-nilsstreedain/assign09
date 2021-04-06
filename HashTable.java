@@ -9,6 +9,8 @@ public class HashTable<K, V> implements Map<K, V> {
 	private ArrayList<LinkedList<MapEntry<K, V>>> table;
 
 	private int itemCount;
+	
+	private final int LOAD_FACTOR_CAP = 8;
 
 	public HashTable() {
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
@@ -32,13 +34,12 @@ public class HashTable<K, V> implements Map<K, V> {
 	}
 
 	/**
-	 * Determines whether this HashTable contains the specified value.
+	 * Determines whether this map contains the specified key.
 	 * 
-	 * O(average list length)
+	 * O(1)
 	 * 
-	 * @param value
-	 * @return true if this HashTable contains one or more keys to the specified
-	 *         value, false otherwise
+	 * @param key
+	 * @return true if this map contains the key, false otherwise
 	 */
 	@Override
 	public boolean containsKey(K key) {
@@ -52,21 +53,20 @@ public class HashTable<K, V> implements Map<K, V> {
 	}
 
 	/**
-	 * Returns a List view of the mappings contained in this HashTable, where the
-	 * ordering of mapping in the list is insignificant.
+	 * Determines whether this map contains the specified value.
 	 * 
-	 * O(average list length)
+	 * O(table length)
 	 * 
-	 * @return a List object containing all mapping (i.e., entries) in this
-	 *         HashTable
+	 * @param value
+	 * @return true if this map contains one or more keys to the specified value,
+	 *         false otherwise
 	 */
 	@Override
 	public boolean containsValue(V value) {
-		LinkedList<MapEntry<K, V>> chain = table.get(value.hashCode() % table.size());
-
-		for (MapEntry<K, V> currEntry : chain)
-			if (currEntry.getValue().equals(value))
-				return true;
+		for (LinkedList<MapEntry<K, V>> currChain : table)
+			for (MapEntry<K, V> currEntry : currChain)
+				if (currEntry.getValue().equals(value))
+					return true;
 
 		return false;
 	}
@@ -120,7 +120,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return itemCount != 0;
+		return itemCount == 0;
 	}
 
 	/**
@@ -137,23 +137,33 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public V put(K key, V value) {
-		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
+		if (itemCount/table.size() > LOAD_FACTOR_CAP) {
+			List<MapEntry<K, V>> entries = this.entries();
+			int newSize = table.size() * 2;
+			
+			table = new ArrayList<LinkedList<MapEntry<K, V>>>();
+			itemCount = 0;
+			for (int i = 0; i < newSize; i++)
+				table.add(new LinkedList<MapEntry<K, V>>());
+			
+			for (MapEntry<K, V> currEntry : entries)
+				this.put(currEntry.getKey(), currEntry.getValue());
+		}
 		
-		V prevValue = null;
+		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
 		
 		for (MapEntry<K, V> currEntry : chain) {
 			if (currEntry.getKey().equals(key)) {
-				prevValue = currEntry.getValue();
-				break;
+				V prevValue = currEntry.getValue();
+				currEntry.setValue(value);
+				return prevValue;
 			}
 		}
 		
-		if (prevValue == null)
-			itemCount++;
-		
+		itemCount++;
 		chain.add(new MapEntry<K, V>(key, value));
 		
-		return prevValue;
+		return null;
 	}
 
 	/**
@@ -169,20 +179,18 @@ public class HashTable<K, V> implements Map<K, V> {
 	public V remove(K key) {
 		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
 
-		V prevValue = null;
-		
 		for (MapEntry<K, V> currEntry : chain) {
 			if (currEntry.getKey().equals(key)) {
-				prevValue = currEntry.getValue();
+				V prevValue = currEntry.getValue();
 
 				itemCount--;
 				chain.remove(currEntry);
 				
-				break;
+				return prevValue;
 			}
 		}
 		
-		return prevValue;
+		return null;
 	}
 
 	/**
