@@ -10,11 +10,12 @@ public class HashTable<K, V> implements Map<K, V> {
 
 	private int itemCount;
 	
+	private final int INITIAL_BACKING_SIZE = 100;
 	private final int LOAD_FACTOR_CAP = 8;
 
 	public HashTable() {
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < INITIAL_BACKING_SIZE; i++)
 			table.add(new LinkedList<MapEntry<K, V>>());
 
 		itemCount = 0;
@@ -29,7 +30,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	public void clear() {
 		itemCount = 0;
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < INITIAL_BACKING_SIZE; i++)
 			table.add(new LinkedList<MapEntry<K, V>>());
 	}
 
