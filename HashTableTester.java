@@ -182,4 +182,33 @@ class HashTableTester {
 	void largeSize() {
 		assertEquals(6, largeHashTable.size());
 	}
+	
+//Student Hash Tests
+	
+	// .equals() share same hash
+	@Test
+	void equalsBadHash() {
+		StudentBadHash alan = new StudentBadHash(1019999, "Alan", "Turing");
+		StudentBadHash alan2 = new StudentBadHash(1019999, "Alan", "Turing");
+		
+		assertTrue(alan.equals(alan2) && alan.hashCode() == alan2.hashCode());
+	}
+
+	@Test
+	void equalsMediumHash() {
+		StudentMediumHash alan = new StudentMediumHash(1019999, "Alan", "Turing");
+		StudentMediumHash alan2 = new StudentMediumHash(1019999, "Alan", "Turing");
+		
+		assertTrue(alan.equals(alan2) && alan.hashCode() == alan2.hashCode());
+	}
+
+	@Test
+	void equalsGoodHash() {
+		StudentGoodHash alan = new StudentGoodHash(1019999, "Alan", "Turing");
+		StudentGoodHash alan2 = new StudentGoodHash(1019999, "Alan", "Turing");
+		
+		assertTrue(alan.equals(alan2) && alan.hashCode() == alan2.hashCode());
+	}
+	
+	
 }

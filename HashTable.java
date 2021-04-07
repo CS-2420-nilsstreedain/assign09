@@ -4,12 +4,21 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class creates a HashTable that maps keys to values and uses various
+ * methods to interact with those keys and values.
+ * 
+ * @author Nils Streedain & Paul Nuffer
+ * @version April 6, 2021
+ */
 public class HashTable<K, V> implements Map<K, V> {
 
 	private ArrayList<LinkedList<MapEntry<K, V>>> table;
 
 	private int itemCount;
 	
+	private int collisons;
+
 	private final int INITIAL_BACKING_SIZE = 100;
 	private final int LOAD_FACTOR_CAP = 8;
 
@@ -28,7 +37,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public void clear() {
-		//performs the same tasks as the constructor
+		// performs the same tasks as the constructor
 		itemCount = 0;
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
 		for (int i = 0; i < INITIAL_BACKING_SIZE; i++)
@@ -45,13 +54,13 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public boolean containsKey(K key) {
-		//gets the LinkedList that the key must reside in, if it exists
+		// gets the LinkedList that the key must reside in, if it exists
 		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
 
-		//checks each entry in the chain for the matching key
+		// checks each entry in the chain for the matching key
 		for (MapEntry<K, V> currEntry : chain)
 			if (currEntry.getKey().equals(key))
-				//exits early if a match is found
+				// exits early if a match is found
 				return true;
 
 		return false;
@@ -142,32 +151,33 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public V put(K key, V value) {
-		if (itemCount/table.size() > LOAD_FACTOR_CAP) {
+		if (itemCount / table.size() > LOAD_FACTOR_CAP) {
 			List<MapEntry<K, V>> entries = this.entries();
 			int newSize = table.size() * 2;
-			
+
 			table = new ArrayList<LinkedList<MapEntry<K, V>>>();
 			itemCount = 0;
 			for (int i = 0; i < newSize; i++)
 				table.add(new LinkedList<MapEntry<K, V>>());
-			
+
 			for (MapEntry<K, V> currEntry : entries)
 				this.put(currEntry.getKey(), currEntry.getValue());
 		}
-		
+
 		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
-		
+
 		for (MapEntry<K, V> currEntry : chain) {
 			if (currEntry.getKey().equals(key)) {
 				V prevValue = currEntry.getValue();
 				currEntry.setValue(value);
 				return prevValue;
 			}
+			collisons++;
 		}
-		
+
 		itemCount++;
 		chain.add(new MapEntry<K, V>(key, value));
-		
+
 		return null;
 	}
 
@@ -190,11 +200,12 @@ public class HashTable<K, V> implements Map<K, V> {
 
 				itemCount--;
 				chain.remove(currEntry);
-				
+
 				return prevValue;
 			}
+			collisons++;
 		}
-		
+
 		return null;
 	}
 
@@ -208,5 +219,9 @@ public class HashTable<K, V> implements Map<K, V> {
 	@Override
 	public int size() {
 		return itemCount;
+	}
+
+	public int getCollisons() {
+		return collisons;
 	}
 }

@@ -8,8 +8,8 @@ import java.text.DecimalFormat;
  * object, but one that does a poor job of distributing students in a hash
  * table.
  * 
- * @author Erin Parker & ?
- * @version ?
+ * @author Erin Parker, Nils Streedain & Paul Nuffer
+ * @version April 6, 2021
  */
 public class StudentMediumHash {
 
@@ -77,6 +77,16 @@ public class StudentMediumHash {
 		//uids should be very unique, and have no real pattern for their distribution on the scale of a HashTable. 
 		//It is also very efficient to return an instance variable. This is only medium however, as we have no guarantee
 		//duplicate uids do not exist, so collisions are still quite possible.
-		return uid;
+		int hash = 0;
+		
+		char[] firstArray = firstName.toCharArray();
+		char[] lastArray = lastName.toCharArray();
+		
+		for (char curr : firstArray)
+			hash += curr;
+		for (char curr : lastArray)	
+			hash += curr;
+		
+		return hash;
 	}
 }
