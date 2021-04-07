@@ -74,8 +74,23 @@ public class StudentGoodHash {
 	}
 
 	public int hashCode() {
-		// FILL IN and add method comment
+		//This method utilizes the random distribution of uid, but combines it with
+		//adding the char values of all the chars from the first and last name strings,
+		//eliminating many hashing conflicts if a duplicate uid with different names
+		//exists. The majority of remaining hashing-caused conflicts will arise when there 
+		//is a duplicate uid, and the both first and last names contain the same total number
+		//of each character. Minimal computation is done, so this should be very efficient still.
 		
-		return 0;
+		int hash = uid;
+		
+		char[] firstArray = firstName.toCharArray();
+		char[] lastArray = lastName.toCharArray();
+		
+		for (char curr : firstArray)
+			hash += curr;
+		for (char curr : lastArray)	
+			hash += curr;
+		return hash;
+		
 	}
 }

@@ -74,8 +74,9 @@ public class StudentMediumHash {
 	}
 
 	public int hashCode() {
-		// FILL IN and add method comment
-		
-		return 0;
+		//uids should be very unique, and have no real pattern for their distribution on the scale of a HashTable. 
+		//It is also very efficient to return an instance variable. This is only medium however, as we have no guarantee
+		//duplicate uids do not exist, so collisions are still quite possible.
+		return uid;
 	}
 }

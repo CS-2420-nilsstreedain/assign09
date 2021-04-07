@@ -74,8 +74,8 @@ public class StudentBadHash {
 	}
 
 	public int hashCode() {
-		// FILL IN and add method comment
-		
-		return 0;
+		//adds length of first and last name. This will hopefully not be too bad as to not run in
+		//timing, but will definitely cause many collisions
+		return firstName.length() + lastName.length();
 	}
 }

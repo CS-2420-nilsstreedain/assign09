@@ -28,6 +28,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public void clear() {
+		//performs the same tasks as the constructor
 		itemCount = 0;
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
 		for (int i = 0; i < INITIAL_BACKING_SIZE; i++)
@@ -44,10 +45,13 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public boolean containsKey(K key) {
+		//gets the LinkedList that the key must reside in, if it exists
 		LinkedList<MapEntry<K, V>> chain = table.get(key.hashCode() % table.size());
 
+		//checks each entry in the chain for the matching key
 		for (MapEntry<K, V> currEntry : chain)
 			if (currEntry.getKey().equals(key))
+				//exits early if a match is found
 				return true;
 
 		return false;
