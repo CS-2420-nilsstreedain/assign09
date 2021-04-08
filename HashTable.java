@@ -20,7 +20,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	private int collisons;
 
 	private final int INITIAL_BACKING_SIZE = 100;
-	private final int LOAD_FACTOR_CAP = 8;
+	private final double LOAD_FACTOR_CAP = 60;
 
 	public HashTable() {
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
@@ -151,7 +151,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public V put(K key, V value) {
-		if (itemCount / table.size() > LOAD_FACTOR_CAP) {
+		if (((double) itemCount) / ((double) table.size()) > LOAD_FACTOR_CAP) {
 			List<MapEntry<K, V>> entries = this.entries();
 			int newSize = table.size() * 2;
 

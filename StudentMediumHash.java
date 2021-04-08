@@ -74,9 +74,8 @@ public class StudentMediumHash {
 	}
 
 	public int hashCode() {
-		//uids should be very unique, and have no real pattern for their distribution on the scale of a HashTable. 
-		//It is also very efficient to return an instance variable. This is only medium however, as we have no guarantee
-		//duplicate uids do not exist, so collisions are still quite possible.
+		//This method adds the char values of all the chars from the first and last name strings,
+		//generating much more uniqueness than just adding the lengths. 
 		int hash = 0;
 		
 		char[] firstArray = firstName.toCharArray();
