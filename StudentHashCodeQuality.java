@@ -25,9 +25,9 @@ public class StudentHashCodeQuality {
 				StringBuilder lastNameBuilder = new StringBuilder();
 
 				for (int j = 0; j < rng.nextInt(5); j++)
-					firstNameBuilder.append(allCharacters.charAt(i % 26));
+					firstNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
 				for (int j = 0; j < rng.nextInt(10); j++)
-					lastNameBuilder.append(allCharacters.charAt(i % 26));
+					lastNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
 
 				String firstName = firstNameBuilder.toString();
 				String lastName = lastNameBuilder.toString();
