@@ -55,7 +55,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	@Override
 	public boolean containsKey(K key) {
 		// gets the LinkedList that the key must reside in, if it exists
-		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode()) % table.size());
+		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode() % table.size()));
 
 		// checks each entry in the chain for the matching key
 		for (MapEntry<K, V> currEntry : chain)
@@ -116,7 +116,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public V get(K key) {
-		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode()) % table.size());
+		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode() % table.size()));
 
 		for (MapEntry<K, V> currEntry : chain)
 			if (currEntry.getKey().equals(key))
@@ -192,7 +192,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public V remove(K key) {
-		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode()) % table.size());
+		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode() % table.size()));
 
 		for (MapEntry<K, V> currEntry : chain) {
 			if (currEntry.getKey().equals(key)) {
