@@ -17,6 +17,7 @@ public class StudentHashTimer {
 
 
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Random rng = new Random();
 		System.out.println("N\tnanoTime");
