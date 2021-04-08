@@ -3,6 +3,13 @@ package assign09;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * This class tests the performance of remove and containsKey
+ * for Java's HashMap and our HashTable classes.
+ * 
+ * @author Paul Nuffer and Nils Streedain
+ *
+ */
 @SuppressWarnings("unused")
 public class HashTableHashMapTimer {
 	
@@ -15,10 +22,10 @@ public class HashTableHashMapTimer {
 		int incr = 1000;
 		for (int probSize = 1000; probSize <= 100000; probSize += incr) {
 
-			int timesToLoop = 2;
+			int timesToLoop = 1000;
 			
-			HashTable<String, Integer> hashTable = new HashTable<>();
-//			HashMap<String, Integer> hashMap = new HashMap<>();
+//			HashTable<String, Integer> hashTable = new HashTable<>();
+			HashMap<String, Integer> hashMap = new HashMap<>();
 
 			for (int j = 0; j < probSize; j++) {
 				StringBuilder stringBuilder = new StringBuilder();
@@ -28,8 +35,8 @@ public class HashTableHashMapTimer {
 				
 				String string = stringBuilder.toString();
 				
-				hashTable.put(string, 0);
-//				hashMap.put(string, 0);
+//				hashTable.put(string, 0);
+				hashMap.put(string, 0);
 			}
 
 			// First, spin computing stuff until one second has gone by.
@@ -50,7 +57,7 @@ public class HashTableHashMapTimer {
 //				hashMap.remove(string);
 
 //				hashTable.containsKey(string);
-//				hashMap.containsKey(string);
+				hashMap.containsKey(string);
 			}
 
 			midpointTime = System.nanoTime();

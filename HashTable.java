@@ -77,6 +77,8 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public boolean containsValue(V value) {
+		//iterates over every chain in the backing array, as the value
+		//could be anywhere
 		for (LinkedList<MapEntry<K, V>> currChain : table)
 			for (MapEntry<K, V> currEntry : currChain)
 				if (currEntry.getValue().equals(value))
@@ -98,6 +100,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	public List<MapEntry<K, V>> entries() {
 		List<MapEntry<K, V>> newList = new ArrayList<MapEntry<K, V>>();
 
+		//iterates over every item
 		for (LinkedList<MapEntry<K, V>> chain : table)
 			for (MapEntry<K, V> currEntry : chain)
 				newList.add(currEntry);
@@ -117,7 +120,8 @@ public class HashTable<K, V> implements Map<K, V> {
 	@Override
 	public V get(K key) {
 		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode() % table.size()));
-
+		
+		//iterates over all items in the chain to find a match
 		for (MapEntry<K, V> currEntry : chain)
 			if (currEntry.getKey().equals(key))
 				return currEntry.getValue();
@@ -151,22 +155,29 @@ public class HashTable<K, V> implements Map<K, V> {
 	 */
 	@Override
 	public V put(K key, V value) {
+		//ensures the load factor does not exceed a limit
+		//load factor is the average length of all the LinkedLists in the backing array
 		if (((double) itemCount) / ((double) table.size()) > LOAD_FACTOR_CAP) {
+			//store all current items
 			List<MapEntry<K, V>> entries = this.entries();
 			int newSize = table.size() * 2;
 
+			//does what the constructor does, but for a doubled value
 			table = new ArrayList<LinkedList<MapEntry<K, V>>>();
 			itemCount = 0;
 			for (int i = 0; i < newSize; i++)
 				table.add(new LinkedList<MapEntry<K, V>>());
 
+			//uses our put method with all the items we stored earlier
 			for (MapEntry<K, V> currEntry : entries)
 				this.put(currEntry.getKey(), currEntry.getValue());
 		}
 
 		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode() % table.size()));
 
+		
 		for (MapEntry<K, V> currEntry : chain) {
+			//updates the value if a key mapping already exists
 			if (currEntry.getKey().equals(key)) {
 				V prevValue = currEntry.getValue();
 				currEntry.setValue(value);
@@ -175,6 +186,7 @@ public class HashTable<K, V> implements Map<K, V> {
 			collisons++;
 		}
 
+		//if no existing mapping, add the new item
 		itemCount++;
 		chain.add(new MapEntry<K, V>(key, value));
 
@@ -195,6 +207,7 @@ public class HashTable<K, V> implements Map<K, V> {
 		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode() % table.size()));
 
 		for (MapEntry<K, V> currEntry : chain) {
+			//if the value is found, store it to return, and remove it
 			if (currEntry.getKey().equals(key)) {
 				V prevValue = currEntry.getValue();
 
@@ -221,7 +234,8 @@ public class HashTable<K, V> implements Map<K, V> {
 		return itemCount;
 	}
 
-	public int getCollisons() {
-		return collisons;
-	}
+	//only used for testing purposed, commented out for 'release'
+//	public int getCollisons() {
+//		return collisons;
+//	}
 }

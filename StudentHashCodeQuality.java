@@ -2,6 +2,15 @@ package assign09;
 
 import java.util.Random;
 
+/**
+ * This class operates similar to a timing class, but instead it prints
+ * the total amount of collisions that the HashTable class reports
+ * instead of outputting a time. Lower collisions indicates
+ * better hash quality.
+ * 
+ * @author Paul Nuffer and Nils Streedain
+ *
+ */
 public class StudentHashCodeQuality {
 
 	private static String allCharacters = "abcdefghijklmnopqrstuvwxyz";
@@ -36,12 +45,13 @@ public class StudentHashCodeQuality {
 				mediumHashCode.put(new StudentMediumHash(uid, firstName, lastName), 0);
 				goodHashCode.put(new StudentGoodHash(uid, firstName, lastName), 0);
 			}
-			
-			System.out.println(
-					probSize + "\t\t" +
-					badHashCode.getCollisons() + "\t" +
-					mediumHashCode.getCollisons() + "\t\t" +
-					goodHashCode.getCollisons());
+// commented out for 'release', needs the getCollisions method to be uncommented
+// inside HashTable for this to function
+//			System.out.println(
+//					probSize + "\t\t" +
+//					badHashCode.getCollisons() + "\t" +
+//					mediumHashCode.getCollisons() + "\t\t" +
+//					goodHashCode.getCollisons());
 		}
 	}
 }

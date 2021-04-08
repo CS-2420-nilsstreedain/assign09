@@ -8,6 +8,12 @@ import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ *This tester class contains methods for testing the HashTable class's methods. 
+ * 
+ * @author Paul Nuffer and Nils Streedain
+ *
+ */
 class HashTableTester {
 	
 	private HashTable<Integer, Integer> emptyIntegerHashTable = new HashTable<>();
