@@ -34,24 +34,25 @@ public class StudentHashTimer {
 			}
 
 			startTime = System.nanoTime();
-				
-			for (int i = 0; i < probSize; i++) {
-				int uid = rng.nextInt(99999999);
-
-				StringBuilder firstNameBuilder = new StringBuilder();
-				StringBuilder lastNameBuilder = new StringBuilder();
-
-				for (int j = 0; j < rng.nextInt(5); j++)
-					firstNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
-				for (int j = 0; j < rng.nextInt(10); j++)
-					lastNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
-
-				String firstName = firstNameBuilder.toString();
-				String lastName = lastNameBuilder.toString();
-
-//				badHashCode.put(new StudentBadHash(uid, firstName, lastName), 0);
-//				mediumHashCode.put(new StudentMediumHash(uid, firstName, lastName), 0);
-				goodHashCode.put(new StudentGoodHash(uid, firstName, lastName), 0);
+			for (int i = 0; i < timesToLoop; i++) {	
+				for (int j = 0; j < probSize; j++) {
+					int uid = rng.nextInt(99999999);
+	
+					StringBuilder firstNameBuilder = new StringBuilder();
+					StringBuilder lastNameBuilder = new StringBuilder();
+	
+					for (int k = 0; k < rng.nextInt(5); k++)
+						firstNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
+					for (int k = 0; k < rng.nextInt(10); k++)
+						lastNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
+	
+					String firstName = firstNameBuilder.toString();
+					String lastName = lastNameBuilder.toString();
+	
+					badHashCode.put(new StudentBadHash(uid, firstName, lastName), 0);
+	//				mediumHashCode.put(new StudentMediumHash(uid, firstName, lastName), 0);
+//					goodHashCode.put(new StudentGoodHash(uid, firstName, lastName), 0);
+				}
 			}
 
 			midpointTime = System.nanoTime();
@@ -59,18 +60,21 @@ public class StudentHashTimer {
 			// Capture the cost of running the loop and any other operations done
 			// above that are not the essential method call being timed.
 			for (int i = 0; i < timesToLoop; i++) {
-				int uid = rng.nextInt(99999999);
+				for (int j = 0; j < probSize; j++) {
+					int uid = rng.nextInt(99999999);
+	
+					StringBuilder firstNameBuilder = new StringBuilder();
+					StringBuilder lastNameBuilder = new StringBuilder();
+	
+					for (int k = 0; k < rng.nextInt(5); k++)
+						firstNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
+					for (int k = 0; k < rng.nextInt(10); k++)
+						lastNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
+	
+					String firstName = firstNameBuilder.toString();
+					String lastName = lastNameBuilder.toString();
 
-				StringBuilder firstNameBuilder = new StringBuilder();
-				StringBuilder lastNameBuilder = new StringBuilder();
-
-				for (int j = 0; j < rng.nextInt(5); j++)
-					firstNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
-				for (int j = 0; j < rng.nextInt(10); j++)
-					lastNameBuilder.append(allCharacters.charAt(rng.nextInt(26)));
-
-				String firstName = firstNameBuilder.toString();
-				String lastName = lastNameBuilder.toString();
+				}
 			}
 
 			stopTime = System.nanoTime();
