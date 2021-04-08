@@ -20,7 +20,7 @@ public class HashTable<K, V> implements Map<K, V> {
 	private int collisons;
 
 	private final int INITIAL_BACKING_SIZE = 100;
-	private final double LOAD_FACTOR_CAP = 60;
+	private final double LOAD_FACTOR_CAP = 1.5;
 
 	public HashTable() {
 		table = new ArrayList<LinkedList<MapEntry<K, V>>>();
@@ -164,7 +164,7 @@ public class HashTable<K, V> implements Map<K, V> {
 				this.put(currEntry.getKey(), currEntry.getValue());
 		}
 
-		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode()) % table.size());
+		LinkedList<MapEntry<K, V>> chain = table.get(Math.abs(key.hashCode() % table.size()));
 
 		for (MapEntry<K, V> currEntry : chain) {
 			if (currEntry.getKey().equals(key)) {
